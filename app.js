@@ -10,9 +10,12 @@ new Vue({
   },
   methods: {
     startGame: function() {
-      (this.gameIsRunning = true),
-        (this.playerHealth = 100),
-        (this.monsterHealth = 100);
+      this.gameIsRunning = true;
+      this.playerHealth = 100;
+      this.monsterHealth = 100;
+      this.turns = [];
+      this.sp = 3;
+      this.heals = 3;
     },
 
     attack: function() {
@@ -31,10 +34,14 @@ new Vue({
       let vm = this;
       let damage = this.calculateDamage(10, 20);
       if (vm.sp > 0) {
-        this.monsterHealth -= damage;
-        if (this.checkWin()) return;
+        vm.turns.unshift({
+          isPlayer: true,
+          text: `Player hits Monster with special attack for ${damage}`
+        });
+        vm.monsterHealth -= damage;
+        if (vm.checkWin()) return;
 
-        this.monsterAttacks();
+        vm.monsterAttacks();
         vm.sp -= 1;
       } else {
         alert("You are out of special Attacks!");
@@ -47,6 +54,10 @@ new Vue({
         vm.playerHealth <= 90
           ? (vm.playerHealth += 10)
           : (vm.playerHealth = 100);
+        vm.turns.unshift({
+          isPlayer: true,
+          text: `Player uses healing potion for 10`
+        });
 
         vm.monsterAttacks();
         vm.heals -= 1;
@@ -79,15 +90,12 @@ new Vue({
         confirm("You have defeated the Monster! Play again?")
           ? this.startGame()
           : (this.gameIsRunning = false);
-        this.sp = 3;
-        this.heals = 3;
+
         return true;
       } else if (this.playerHealth <= 0) {
         confirm("You have been defeated... Play again?")
           ? this.startGame()
           : (this.gameIsRunning = false);
-        this.sp = 3;
-        this.heals = 3;
         return true;
       }
       return false;
