@@ -47,7 +47,11 @@ new Vue({
         alert("You are out of healing potions!");
       }
     },
-    giveUp: function() {},
+    giveUp: function() {
+      this.gameIsRunning = false;
+      this.sp = 3;
+      this.heals = 3;
+    },
 
     calculateDamage: function(min, max) {
       return Math.max(Math.floor(Math.random() * max) + 1, min);
