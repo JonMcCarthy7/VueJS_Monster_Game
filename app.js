@@ -4,7 +4,8 @@ new Vue({
     playerHealth: 100,
     monsterHealth: 100,
     gameIsRunning: false,
-    sp: 3
+    sp: 3,
+    heals: 3
   },
   methods: {
     startGame: function() {
@@ -33,7 +34,19 @@ new Vue({
       }
     },
 
-    heal: function() {},
+    heal: function() {
+      let vm = this;
+      if (vm.heals > 0) {
+        vm.playerHealth <= 90
+          ? (vm.playerHealth += 10)
+          : (vm.playerHealth = 100);
+
+        vm.monsterAttacks();
+        vm.heals -= 1;
+      } else {
+        alert("You are out of healing potions!");
+      }
+    },
     giveUp: function() {},
 
     calculateDamage: function(min, max) {
@@ -51,12 +64,14 @@ new Vue({
           ? this.startGame()
           : (this.gameIsRunning = false);
         this.sp = 3;
+        this.heals = 3;
         return true;
       } else if (this.playerHealth <= 0) {
         confirm("You have been defeated... Play again?")
           ? this.startGame()
           : (this.gameIsRunning = false);
         this.sp = 3;
+        this.heals = 3;
         return true;
       }
       return false;
