@@ -67,8 +67,6 @@ new Vue({
     },
     giveUp: function() {
       this.gameIsRunning = false;
-      this.sp = 3;
-      this.heals = 3;
     },
 
     calculateDamage: function(min, max) {
